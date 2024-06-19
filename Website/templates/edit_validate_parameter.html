@@ -1,0 +1,64 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+<style>
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        border-radius: 10px;
+    }
+
+    .form-label {
+        color: white;
+        font-family: 'Fira Code', monospace;
+    }
+
+    .form-control {
+        background-color: #ffffff73;
+        color: white;
+        font-family: 'Fira Code', monospace;
+        border: none;
+        border-radius: 8px;
+    }
+
+    h1 {
+        color: white;
+        border-radius: 8px;
+        font-family: 'Fira Code', monospace;
+        margin-top: 100px;
+        margin-bottom: 80px;
+    }
+</style>
+<div class="container-fluid">
+    <h1 class="text-center">EDIT PARAMETER</h1>
+    <div class="row mt-3">
+        <div class="col">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <input type="hidden" name="row_id" value="{{ row.id }}">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    {{ form.name(class="form-control", autofocus=true) }}
+                </div>
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    {{ form.description(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="command_id" class="form-label">Command Name</label>
+                    {{ form.command_name(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.is_alone() }}
+                    <label for="is_alone" class="form-label">Is Alone</label>
+                </div>
+                <div class="form-group">
+                    {{ form.submit_edit_validate_param(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

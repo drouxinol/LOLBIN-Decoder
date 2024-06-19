@@ -1,0 +1,110 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='favicon_logo.png')}}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Code:400,700">
+  <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+  <title>LOBIN DECODER</title>
+  <style>
+    @keyframes slide-in {
+      0% {
+        transform: translateX(100%);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slide-out {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- PRECISAMOS DISTO PARA FAZER O BOTÃO DO NAVBAR COLAPSAR - O BOOTSTRAP PRECISA DA JQUERY-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <div class="background-image"></div>
+  <header id="lc-header">
+    <div>
+      <nav class="navbar navbar-expand-lg navbar-dark nav-custom color-changed">
+        <div class="container">
+          <a class="navbar-brand" href="/">
+            <img class="logo" src="{{url_for('static', filename='logo.png')}}" alt="logo">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNavbar1"
+            aria-controls="myNavbar1" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="myNavbar1">
+            {% if not current_user.is_authenticated %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center" style="margin-left: 50%;">
+              <li class="nav-item"><a href="#" class="nav-link">MENU #1</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">MENU #2</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">MENU #3</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">MENU #4</a></li>
+              <li class="nav-item"><a href="{{ url_for('auth.login') }}" class="nav-link">LOGIN</a></li>
+              {% else %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center" style="margin-left: 40%;">
+                <li class="nav-item"><a href="#" class="nav-link">CYBER RESILIENCE</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">SERVICE OFFERING</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">RECRUITMENT</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">BLOG</a></li>
+                <li class="nav-item"><a href="{{ url_for('auth.dashboard') }}" class="nav-link">DASHBOARD</a></li>
+                <li class="nav-item"><a href="{{ url_for('auth.logout') }}" class="nav-link">LOGOUT</a></li>
+                {% endif %}
+              </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert"
+      style="position: fixed; top: 60px; right: 20px; animation: slide-in 0.5s ease-out forwards;">
+      <span>{{ message }}</span>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  <script>
+    window.setTimeout(function () {
+      let alert = document.querySelector('.alert');
+      if (alert) {
+        alert.style.animation = 'slide-out 0.5s ease-in forwards';
+        alert.addEventListener('animationend', function () {
+          alert.remove();
+        });
+      }
+    }, 3000);
+  </script>
+
+
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+</body>
+
+</html>

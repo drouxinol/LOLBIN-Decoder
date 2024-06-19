@@ -1,0 +1,78 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+<style>
+  .card {
+    background-color: #f8f9fa;
+    border: none;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .card-title {
+    color: #343a40;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-floating label {
+    color: #6c757d;
+    font-weight: 500;
+  }
+
+  .form-control {
+    border: none;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    font-weight: 500;
+    color: #343a40;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #7386d5;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0563c9;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-8 col-md-6 col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Login</h2>
+          <form method="post">
+            {{ form.csrf_token }}
+            <div class="form-floating mb-3">
+              {{ form.email(class="form-control", id="inputEmail", placeholder="name@example.com") }}
+              <label for="{{ form.email.id }}">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+              {{ form.password(class="form-control", id="inputPassword", placeholder="Password") }}
+              <label for="{{ form.password.id }}" class="form-label">Password</label>
+            </div>
+            <div class="d-grid">
+              {{ form.submit_login(class="btn btn-primary") }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

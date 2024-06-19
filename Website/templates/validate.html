@@ -1,0 +1,70 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+<style>
+    .table {
+        color: rgb(0, 0, 0);
+        background-color: #ffffffc2;
+        border-radius: 5px;
+        font-family: 'Fira Code', monospace;
+    }
+
+    .table td {
+        word-wrap: break-word;
+    }
+
+    h1 {
+        color: white;
+        border-radius: 8px;
+        font-family: 'Fira Code', monospace;
+        margin-top: 100px;
+        margin-bottom: 80px;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+</style>
+
+<div class="container-fluid">
+    <h1 class="text-center">VALIDATE TABLE</h1>
+    <div class="row mt-3">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="align-middle text-center" style="max-width: 250px;">Command Name</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Parameter</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Parameter Description</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Is alone</lth>
+                            <th class="align-middle text-center" style="max-width: 250px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in rows %}
+                        <tr>
+                            <td class="align-middle text-center" style="max-width: 250px;">{{ row.command }}</td>
+                            <td class="align-middle text-center" style="max-width: 250px;">{{ row.parameter }}</td>
+                            <td class="align-middle text-center" style="max-width: 250px;">{{ row.param_description }}</td>
+                            <td class="align-middle text-center" style="max-width: 250px;">{{ row.is_alone }}</td>
+                            <td class="align-middle text-center">
+                                <form class="d-inline-block" method="POST">
+                                    {{ form.csrf_token }}
+                                    <input type="hidden" name="row_id" value="{{ row.id }}">
+                                    <div class="d-flex flex-row">
+                                        {{ form.validate(class="btn btn-outline-success me-2", style="border-radius: 10px;") }}
+                                        {{ form.reject(class="btn btn-outline-danger me-2", style="border-radius: 10px;") }}
+                                        {{ form.edit(class="btn btn-outline-dark me-2", style="border-radius: 10px;") }}
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+<style>
+  .table {
+    color: rgb(0, 0, 0);
+    background-color: #ffffffc2;
+    border-radius: 5px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .table td {
+    word-wrap: break-word;
+  }
+
+  .table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .highlight {
+    background-color: #ffffffcc;
+  }
+
+  .highlight_text {
+    text-shadow: 2px 2px 10px rgb(217, 255, 0); /* Ajuste a cor e a opacidade conforme necessário */
+  }
+
+</style>
+
+
+
+<div class="row py-5">
+  <div class="col-lg-9 mx-auto text-white text-center pt-4">
+    <h1><img class="artexplain-img" src="{{url_for('static', filename='artexplain.png')}}"></h1>
+  </div>
+</div>
+
+<div class="container">
+  <form method="GET">
+    <div class="p-2 bg-light rounded rounded-pill shadow-sm">
+      <div class="input-group">
+        <input type="search" name="Search-input" placeholder="Insert a command" class="form-control border-0 bg-light">
+        <div class="input-group-append">
+          <button id="button-addon1" type="submit" class="btn btn-link text-primary"><img class="search-icon"
+              src="{{url_for('static', filename='find.png')}}"></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+{% if commands %}
+<div class="container-fluid">
+  <div class="row py-3" style="font-family: 'Fira Code', monospace; font-size: 1.5rem;">
+    <div id="search_input" class="col text-white text-center pt-4">
+      {% for command in commands %}
+      <span type="button">{{ command.name }}</span>
+      {% if command.parameters %}
+      {% for parameter in command.parameters %}
+      <span type="button">{{ parameter.name }}</span>
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if commands %}
+<div class="table-responsive">
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th class="align-middle text-center">Field</th>
+        <th class="align-middle text-center">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for command in commands %}
+      <tr id="{{command.name}}">
+        <td class="align-middle text-center">{{ command.name }}</td>
+        <td class="align-middle text-center">{{ command.description }}</td>
+      </tr>
+      {% if command.parameters %}
+      {% for param in command.parameters %}
+      <tr id="{{param.name}}">
+        <td class="align-middle text-center">
+          {% if param.flag %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-exclamation-triangle"
+            viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-custom-class="custom-tooltip" data-bs-title="AI Generated">
+            <path
+              d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+            <path
+              d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+          </svg>
+          {% endif %}
+          {{ param.name }}
+        </td>
+        <td class="align-middle text-center">{{ param.description }}</td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endif %}
+
+
+
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+  // Seleciona todos os elementos "span" dentro da div com classe "col"
+  var spans = document.querySelector(".col").querySelectorAll("span");
+
+  // Adiciona eventos de "mouseover" e "mouseout" em cada elemento "span"
+  spans.forEach(function (span) {
+    span.addEventListener("mouseover", function () {
+      var name = span.textContent; // Obtém o nome do comando ou parâmetro
+      var div = document.getElementById(name); // Seleciona a div com o mesmo nome
+      if (div) {
+        div.classList.add("highlight"); // Adiciona a classe "highlight" à div
+        // Remove a classe "highlight" de todas as outras divs
+        var otherDivs = document.querySelectorAll(".card");
+        otherDivs.forEach(function (otherDiv) {
+          if (otherDiv !== div) {
+            otherDiv.classList.remove("highlight");
+          }
+        });
+      }
+    });
+
+    span.addEventListener("mouseout", function () {
+      var name = span.textContent; // Obtém o nome do comando ou parâmetro
+      var div = document.getElementById(name); // Seleciona a div com o mesmo nome
+      if (div) {
+        div.classList.remove("highlight"); // Remove a classe "highlight" da div
+      }
+    });
+  });
+
+  // Seleciona todas as linhas da tabela
+  var rows = document.querySelectorAll("tr");
+
+  // Seleciona todos os spans dentro da div com classe "col"
+  var spans = document.querySelector(".col").querySelectorAll("span");
+
+  // Adiciona eventos de "mouseover" e "mouseout" em cada linha da tabela
+  rows.forEach(function (row) {
+    row.addEventListener("mouseover", function () {
+      var id = row.id; // Obtém o ID da linha (corresponde ao ID do comando ou parâmetro)
+      
+      // Percorre os spans para encontrar o span com texto correspondente ao ID da linha
+      spans.forEach(function (span) {
+        if (span.textContent === id) {
+          span.classList.add("highlight_text"); // Adiciona a classe "highlight_text" ao span
+        }
+      });
+    });
+
+    row.addEventListener("mouseout", function () {
+      var id = row.id; // Obtém o ID da linha (corresponde ao ID do comando ou parâmetro)
+
+      // Percorre os spans para encontrar o span com texto correspondente ao ID da linha
+      spans.forEach(function (span) {
+        if (span.textContent === id) {
+          span.classList.remove("highlight_text"); // Remove a classe "highlight_text" do span
+        }
+      });
+    });
+  });
+
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+<style>
+    .table {
+        color: rgb(0, 0, 0);
+        background-color: #ffffffc2;
+        border-radius: 5px;
+        font-family: 'Fira Code', monospace;
+    }
+
+    .table td {
+        word-wrap: break-word;
+    }
+
+    h1 {
+        color: white;
+        border-radius: 8px;
+        font-family: 'Fira Code', monospace;
+        margin-top: 100px;
+        margin-bottom: 80px;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+</style>
+
+<div class="position-fixed bottom-0 end-0 m-3 d-flex align-items-center">
+    <a href="{{ url_for('auth.create_parameter') }}" class="btn btn-primary rounded-pill me-3"
+        style="font-size: 0.9rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+        </svg>
+    </a>
+</div>
+
+
+<div class="container-fluid">
+    <h1 class="text-center">PARAMETERS TABLE</h1>
+    <div class="row mt-3">
+        <form class="col row justify-content-start" method="GET" action="{{ url_for('auth.parameters') }}">
+            <div class="col-md-4 col-lg-3 mb-3">
+                <div class="input-group">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                        name="search_query">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon1"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <div class="table-responsive-lg text-center">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="align-middle text-center" style="max-width: 250px;">Name</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Description</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Command Name</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Is Alone</th>
+                            <th class="align-middle text-center" style="max-width: 250px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for parameter in parameters %}
+                        <tr>
+                            <td class="align-middle text-center text-truncate" style="max-width: 280px;">{{
+                                parameter.name }}</td>
+                            <td class="align-middle text-center" style="max-width: 250px;">{{ parameter.description }}
+                            </td>
+                            <td class="align-middle text-center" style="max-width: 200px;">{{ parameter.command.name }}
+                            </td>
+                            <td class="align-middle text-center" style="max-width: 200px;">{{ parameter.is_alone }}</td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <form class="d-inline-block" method="POST"
+                                        action="{{ url_for('auth.edit_parameter') }}">
+                                        <input type="hidden" name="parameter_id" value="{{ parameter.id }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-dark"
+                                            style="border-radius: 10px;">Edit</button>
+                                    </form>
+                                    <form class="d-inline" method="POST" style="margin-left: 10px;">
+                                        {{ deleteform.csrf_token }}
+                                        <input type="hidden" name="parameter_id" value="{{ parameter.id }}">
+                                        {{ deleteform.submit_delete(class="btn btn-sm btn-outline-danger mr-2",
+                                        style="border-radius: 10px;") }}
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if parameters.has_prev %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('auth.parameters', page=parameters.prev_num, search_query=search_query) }}">Previous</a>
+            </li>
+            {% endif %}
+            {% for page in parameters.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
+            {% if page %}
+            {% if parameters.page == page %}
+            <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link"
+                    href="{{ url_for('auth.parameters', page=page, search_query=search_query) }}">{{ page }}</a></li>
+            {% endif %}
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if parameters.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('auth.parameters', page=parameters.next_num, search_query=search_query) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}
