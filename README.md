@@ -15,3 +15,10 @@ In addition, I configured a secure server environment to host and run the web ap
 Furthermore, I performed vulnerability tests conducted on both the web application and the server infrastructure. These tests aimed to identify and address any potential security weaknesses that could be exploited by malicious actors.
 
 The web application was developed using Flask and its modules, along with HTML, JavaScript, and CSS for the front-end interface. Flask was chosen for its simplicity and flexibility in building web applications, while HTML, JavaScript, and CSS were utilized to create a dynamic and responsive user interface.
+
+
+NOTE:
+The credentials for the login:
+
+Email: admin@gmail.com
+Password: admin123
