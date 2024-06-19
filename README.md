@@ -13,3 +13,5 @@ One of the key benefits of this application is its ability to assist in the iden
 In addition, I configured a secure server environment to host and run the web application, ensuring that all components are set up with appropriate security measures. This included configuring firewalls, implementing HTTPS for secure communication, and applying server hardening practices to mitigate potential vulnerabilities.
 
 Furthermore, I performed vulnerability tests conducted on both the web application and the server infrastructure. These tests aimed to identify and address any potential security weaknesses that could be exploited by malicious actors.
+
+The web application was developed using Flask and its modules, along with HTML, JavaScript, and CSS for the front-end interface. Flask was chosen for its simplicity and flexibility in building web applications, while HTML, JavaScript, and CSS were utilized to create a dynamic and responsive user interface.
