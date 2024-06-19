@@ -18,7 +18,8 @@ The web application was developed using Flask and its modules, along with HTML, 
 
 
 NOTE:
-The credentials for the login:
+The credentials for the login are:
 
-Email: admin@gmail[.]com
-Password: admin123
+Email -> admin@gmail[.]com
+
+Password -> admin123
