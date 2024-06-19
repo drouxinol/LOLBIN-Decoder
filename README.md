@@ -1,4 +1,4 @@
-#LOLBIN Decoder
+# LOLBIN Decoder
 
 During my college internship at the Instituto Superior de Engenharia de Coimbra (ISEC), I completed this project entirely from scratch. Despite the limited time available, I was able to write all the code myself. As a result, there may be areas that could benefit from further refinement and improvement.
 
