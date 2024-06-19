@@ -94,7 +94,9 @@ def login():
         user = User.query.filter_by(email=email).first()
         
         if user:
+            # IF YOU WANT TO CHECK THE HASH OF THE PASSWORD
             ##if check_password_hash(user.password, password):
+            #IF YOU JUST WANT TO CHECK THE PLAIN TEXT PASSWORD (FOR DEBUG PURPOSES)
             if user.password == password:
                 login_user(user, remember=True)
                 return redirect(url_for('auth.dashboard'))
